@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1308</width>
+    <height>777</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>1100</x>
+      <y>650</y>
+      <width>109</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Button</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="CVWidget" name="image">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>40</y>
+      <width>1001</width>
+      <height>581</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QScrollBar" name="horizontalScrollBar">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>620</y>
+      <width>1001</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <property name="invertedAppearance">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QScrollBar" name="verticalScrollBar">
+    <property name="geometry">
+     <rect>
+      <x>1190</x>
+      <y>40</y>
+      <width>16</width>
+      <height>581</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="doubleSpinBox">
+    <property name="geometry">
+     <rect>
+      <x>1000</x>
+      <y>650</y>
+      <width>77</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <double>0.100000000000000</double>
+    </property>
+    <property name="maximum">
+     <double>10.000000000000000</double>
+    </property>
+    <property name="singleStep">
+     <double>0.100000000000000</double>
+    </property>
+    <property name="value">
+     <double>1.000000000000000</double>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>40</y>
+      <width>121</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>仿射变换</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>color</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>convolution</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>morphology</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>content</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>380</y>
+      <width>151</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>历史</string>
+     </attribute>
+     <widget class="QListWidget" name="listWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>151</width>
+        <height>211</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>暂存</string>
+     </attribute>
+     <widget class="ImageList" name="listWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>151</width>
+        <height>211</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>860</x>
+      <y>650</y>
+      <width>113</width>
+      <height>35</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1308</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuopen">
+    <property name="title">
+     <string>open</string>
+    </property>
+    <addaction name="actionopen"/>
+    <addaction name="actionsave"/>
+    <addaction name="actionsave_as"/>
+   </widget>
+   <addaction name="menuopen"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QDockWidget" name="dockWidget_2">
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_2"/>
+  </widget>
+  <action name="actionopen">
+   <property name="text">
+    <string>open</string>
+   </property>
+  </action>
+  <action name="actionsave">
+   <property name="text">
+    <string>save</string>
+   </property>
+  </action>
+  <action name="actionsave_as">
+   <property name="text">
+    <string>save as</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>CVWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>cvwidget.h</header>
+   <slots>
+    <signal>showColor(QString)</signal>
+    <signal>save(Mat,QString)</signal>
+    <slot>setScale(double)</slot>
+    <slot>setOffsetX(int)</slot>
+    <slot>setOffsetY(int)</slot>
+    <slot>pushSave(QString)</slot>
+    <slot>showImage(Mat)</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>ImageList</class>
+   <extends>QListWidget</extends>
+   <header>imagelist.h</header>
+   <slots>
+    <signal>showImg(Mat)</signal>
+    <slot>addImg(Mat,QString)</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>image</sender>
+   <signal>showColor(QString)</signal>
+   <receiver>statusBar</receiver>
+   <slot>showMessage(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>655</x>
+     <y>454</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>632</x>
+     <y>753</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalScrollBar</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>image</receiver>
+   <slot>setOffsetX(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>349</x>
+     <y>667</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>360</x>
+     <y>624</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>verticalScrollBar</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>image</receiver>
+   <slot>setOffsetY(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1205</x>
+     <y>291</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1174</x>
+     <y>257</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>image</receiver>
+   <slot>setScale(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1025</x>
+     <y>700</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>946</x>
+     <y>521</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>image</sender>
+   <signal>save(Mat,QString)</signal>
+   <receiver>listWidget_2</receiver>
+   <slot>addImg(Mat,QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>254</x>
+     <y>460</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>118</x>
+     <y>514</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listWidget_2</sender>
+   <signal>showImg(Mat)</signal>
+   <receiver>image</receiver>
+   <slot>showImage(Mat)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>121</x>
+     <y>605</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>602</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
