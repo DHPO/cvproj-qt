@@ -30,6 +30,12 @@ private slots:
 
     void on_buttonToGrayscale_clicked();
 
+    void on_buttonLaplace_clicked();
+
+    void on_buttonGauss_clicked();
+
+    void on_buttonMean_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *newAct;

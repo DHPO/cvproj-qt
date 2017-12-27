@@ -5,7 +5,10 @@
 #include <QDebug>
 #include <QFileDialog>
 #include "./filter/filter_difference.h"
+#include "./filter/filter_smooth.h"
 #include "./color/color_colorspace.h"
+#include "./dialog/confirmdialog.h"
+#include "./dialog/valuedialog.h"
 using namespace cv;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -31,6 +34,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
+    qDebug() << ConfirmDialog().show("test") << endl;
     ui->image->pushSave(ui->lineEdit->text());
 }
 
@@ -96,4 +100,45 @@ void MainWindow::on_buttonToGrayscale_clicked()
     img = RGBToGray<uchar>(AVG).doMap(img);
     ui->image->showImage(img);
     ui->history->addImg(img, QString("To Grayscale"));
+}
+
+void MainWindow::on_buttonLaplace_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+    if (img.channels() == 3)
+        img = RGBToGray<uchar>(AVG).doMap(img);
+    double sigma;
+    if (ValueDialog().show("sigma", sigma)) {
+        img = LaplacianFilter(sigma).doFilter(img);
+        img.convertTo(img, CV_8UC1, 1, 0);
+        ui->image->showImage(img);
+        ui->history->addImg(img, QString("Laplace"));
+    }
+}
+
+void MainWindow::on_buttonGauss_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+    double sigma;
+    if (ValueDialog().show("sigma", sigma)) {
+        img = GaussianFilter(sigma).doFilter(img);
+        img.convertTo(img, CV_8UC(img.channels()));
+        ui->image->showImage(img);
+        ui->history->addImg(img, QString("Gauss"));
+    }
+}
+
+void MainWindow::on_buttonMean_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+    double size;
+    if (ValueDialog().show("size", size, true)) {
+        img = MeanFilter(size).doFilter(img);
+        img.convertTo(img, CV_8UC(img.channels()));
+        ui->image->showImage(img);
+        ui->history->addImg(img, QString("Mean"));
+    }
 }

@@ -39,7 +39,9 @@ SOURCES += \
     filter/filter_smooth.cpp \
     matrix/matrix_conv.cpp \
     matrix/matrix_math.cpp \
-    morphology/morphology_basic.cpp
+    morphology/morphology_basic.cpp \
+    dialog/confirmdialog.cpp \
+    dialog/valuedialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -56,11 +58,15 @@ HEADERS += \
     matrix/matrix_conv.h \
     matrix/matrix_map.h \
     matrix/matrix_math.h \
-    morphology/morphology_basic.h
+    morphology/morphology_basic.h \
+    dialog/confirmdialog.h \
+    dialog/valuedialog.h
 
 FORMS += \
         mainwindow.ui \
-    dialog.ui
+    dialog.ui \
+    dialog/confirmdialog.ui \
+    dialog/valuedialog.ui
 
 DISTFILES += \
     1.png
