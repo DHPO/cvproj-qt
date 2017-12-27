@@ -1,8 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "dialog.h"
 #include <opencv2/opencv.hpp>
 #include <QDebug>
 #include <QFileDialog>
+#include "./filter/filter_difference.h"
+#include "./color/color_colorspace.h"
 using namespace cv;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -48,6 +51,8 @@ void MainWindow::on_buttonOpen_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this, tr("Open Image"), "/home/jimmy", tr("Image Files (*.png *.jpg *.bmp)"));
     qDebug() << filename << endl;
+    if (filename.toStdString() == "")
+        return;
     Mat img = imread(filename.toStdString());
     ui->image->showImage(img);
     ui->history->addImg(img, QString("Load"));
@@ -56,6 +61,39 @@ void MainWindow::on_buttonOpen_clicked()
 void MainWindow::on_buttonSaveAs_clicked()
 {
     QString filename = QFileDialog::getSaveFileName(this, tr("Save Image"), "/home/jimmy", tr("Image Files (*.png *.jpg *.bmp)"));
-    Mat img = ui->image->getImage();
+    if (filename.toStdString() == "")
+        return;
+    Mat img;
+    ui->image->getImage(img);
     imwrite(filename.toStdString(), img);
+}
+
+void MainWindow::on_buttonCanay_clicked()
+{
+    int value;
+    bool accept = Dialog().getChoice(value);
+    qDebug() << accept << value << endl;
+}
+
+void MainWindow::on_buttonSobel_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+    if (img.channels() == 3)
+        img = RGBToGray<uchar>(AVG).doMap(img);
+    img = SobelFilter().doFilter(img);
+    img.convertTo(img, CV_8UC1, 0.25, 0);
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString("Sobel"));
+}
+
+void MainWindow::on_buttonToGrayscale_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+    if (img.channels() != 3)
+        return;
+    img = RGBToGray<uchar>(AVG).doMap(img);
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString("To Grayscale"));
 }

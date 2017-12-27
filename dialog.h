@@ -14,6 +14,7 @@ class Dialog : public QDialog
 public:
     explicit Dialog(QWidget *parent = 0);
     ~Dialog();
+    bool getChoice(int &result);
 
 private:
     Ui::Dialog *ui;

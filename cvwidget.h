@@ -13,7 +13,7 @@ class CVWidget : public QOpenGLWidget, protected QOpenGLFunctions_2_0
     Q_OBJECT
 public:
     explicit CVWidget(QWidget *parent = 0);
-    Mat getImage();
+    void getImage(Mat &image);
 
 signals:
     void    imageSizeChanged( int outW, int outH ); /// Used to resize the image outside the widget
@@ -41,6 +41,7 @@ private:
     QImage      mRenderQtImg;           /// Qt image to be rendered
     QImage      mResizedImg;
     cv::Mat     mOrigImage;             /// original OpenCV image to be shown
+    cv::Mat		origin;
 
     QColor      mBgColor;		/// Background color
 

@@ -127,6 +127,7 @@ void CVWidget::recalculatePosition()
 
 void CVWidget::showImage(Mat image)
 {
+    image.copyTo(origin);
     drawMutex.lock();
     if (image.channels() == 3)
         cvtColor(image, mOrigImage, CV_BGR2RGBA);
@@ -180,9 +181,7 @@ void CVWidget::pushSave(QString name)
     emit save(mOrigImage, name);
 }
 
-Mat CVWidget::getImage()
+void CVWidget::getImage(Mat &image)
 {
-    Mat image;
-    cvtColor(mOrigImage, image, CV_RGBA2BGRA);
-    return image;
+    origin.copyTo(image);
 }

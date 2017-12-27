@@ -299,6 +299,58 @@
        <string>Gauss</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="buttonMean">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>50</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Mean</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonMedium">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>90</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Medium</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonSobel">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>130</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Sobel</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonLaplace">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>170</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Laplace</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="Morphology">
      <widget class="QPushButton" name="buttonDilate">

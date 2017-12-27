@@ -24,6 +24,12 @@ private slots:
 
     void on_buttonSaveAs_clicked();
 
+    void on_buttonCanay_clicked();
+
+    void on_buttonSobel_clicked();
+
+    void on_buttonToGrayscale_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *newAct;

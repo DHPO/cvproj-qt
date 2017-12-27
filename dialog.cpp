@@ -12,3 +12,10 @@ Dialog::~Dialog()
 {
     delete ui;
 }
+
+bool Dialog::getChoice(int &result)
+{
+    exec();
+    result = ui->slider->value();
+    return this->result();
+}

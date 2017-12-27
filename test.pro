@@ -29,13 +29,34 @@ SOURCES += \
         mainwindow.cpp \
     dialog.cpp \
     cvwidget.cpp \
-    imageList.cpp
+    imageList.cpp \
+    color/color_colorspace.cpp \
+    color/color_histogram.cpp \
+    color/color_interpolate.cpp \
+    expect/expect.cpp \
+    filter/filter_basic.cpp \
+    filter/filter_difference.cpp \
+    filter/filter_smooth.cpp \
+    matrix/matrix_conv.cpp \
+    matrix/matrix_math.cpp \
+    morphology/morphology_basic.cpp
 
 HEADERS += \
         mainwindow.h \
     dialog.h \
     cvwidget.h \
-    imageList.h
+    imageList.h \
+    color/color_colorspace.h \
+    color/color_histogram.h \
+    color/color_interpolate.h \
+    expect/expect.h \
+    filter/filter_basic.h \
+    filter/filter_difference.h \
+    filter/filter_smooth.h \
+    matrix/matrix_conv.h \
+    matrix/matrix_map.h \
+    matrix/matrix_math.h \
+    morphology/morphology_basic.h
 
 FORMS += \
         mainwindow.ui \
