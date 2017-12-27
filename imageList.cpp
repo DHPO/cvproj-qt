@@ -8,16 +8,18 @@ ImageList::ImageList(QWidget *parent):QListWidget(parent)
 
 void ImageList::getImg(QListWidgetItem *item)
 {
-    Mat *img = imgs[item->text()];
+    QModelIndex index = indexFromItem(item);
+    Mat *img = imgs[index.row()];
     emit showImg(*img);
 }
 
 void ImageList::addImg(Mat img, QString name)
 {
     Mat *pimg = new Mat(img);
-    while(imgs.find(name) != imgs.end()) {
+    /*while(imgs.find(name) != imgs.end()) {
         name.append("~");
     }
-    imgs[name] = pimg;
+    imgs[name] = pimg;*/
     addItem(name);
+    imgs.push_back(pimg);
 }

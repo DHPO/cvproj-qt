@@ -11,9 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->image->setMouseTracking(true);
-    Mat img = imread("1.png");
-    ui->image->showImage(img);
-    ui->listWidget->addItem(QString("test"));
     QAction *actionopen = ui->actionopen;
     actionopen->setShortcuts(QKeySequence::Open);
     actionopen->setStatusTip(tr("Create a new file"));
@@ -45,4 +42,20 @@ void MainWindow::saveas()
 {
     QString filename = QFileDialog::getSaveFileName(this, tr("Save Image"), "/home/jimmy", tr("Image Files (*.png *.jpg *.bmp)"));
     // TODO
+}
+
+void MainWindow::on_buttonOpen_clicked()
+{
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open Image"), "/home/jimmy", tr("Image Files (*.png *.jpg *.bmp)"));
+    qDebug() << filename << endl;
+    Mat img = imread(filename.toStdString());
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString("Load"));
+}
+
+void MainWindow::on_buttonSaveAs_clicked()
+{
+    QString filename = QFileDialog::getSaveFileName(this, tr("Save Image"), "/home/jimmy", tr("Image Files (*.png *.jpg *.bmp)"));
+    Mat img = ui->image->getImage();
+    imwrite(filename.toStdString(), img);
 }

@@ -13,6 +13,7 @@ class CVWidget : public QOpenGLWidget, protected QOpenGLFunctions_2_0
     Q_OBJECT
 public:
     explicit CVWidget(QWidget *parent = 0);
+    Mat getImage();
 
 signals:
     void    imageSizeChanged( int outW, int outH ); /// Used to resize the image outside the widget

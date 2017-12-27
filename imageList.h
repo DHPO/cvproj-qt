@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QListWidget>
-#include <map>
+#include <vector>
 #include <opencv2/opencv.hpp>
 using namespace std;
 using namespace cv;
@@ -25,7 +25,7 @@ private slots:
     void getImg(QListWidgetItem *item);
 
 private:
-    map<QString, Mat*> imgs;
+    vector<Mat *> imgs;
 };
 
 #endif // IMAGELIST_H

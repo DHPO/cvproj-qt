@@ -20,6 +20,10 @@ private slots:
     void open();
     void saveas();
 
+    void on_buttonOpen_clicked();
+
+    void on_buttonSaveAs_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *newAct;

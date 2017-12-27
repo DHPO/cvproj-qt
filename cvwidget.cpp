@@ -179,3 +179,10 @@ void CVWidget::pushSave(QString name)
 {
     emit save(mOrigImage, name);
 }
+
+Mat CVWidget::getImage()
+{
+    Mat image;
+    cvtColor(mOrigImage, image, CV_RGBA2BGRA);
+    return image;
+}
