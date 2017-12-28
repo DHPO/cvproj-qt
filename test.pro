@@ -41,7 +41,9 @@ SOURCES += \
     matrix/matrix_math.cpp \
     morphology/morphology_basic.cpp \
     dialog/confirmdialog.cpp \
-    dialog/valuedialog.cpp
+    dialog/valuedialog.cpp \
+    dialog/kerneldialog.cpp \
+    dialog/messagedialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -60,13 +62,17 @@ HEADERS += \
     matrix/matrix_math.h \
     morphology/morphology_basic.h \
     dialog/confirmdialog.h \
-    dialog/valuedialog.h
+    dialog/valuedialog.h \
+    dialog/kerneldialog.h \
+    dialog/messagedialog.h
 
 FORMS += \
         mainwindow.ui \
     dialog.ui \
     dialog/confirmdialog.ui \
-    dialog/valuedialog.ui
+    dialog/valuedialog.ui \
+    dialog/kerneldialog.ui \
+    dialog/messagedialog.ui
 
 DISTFILES += \
     1.png

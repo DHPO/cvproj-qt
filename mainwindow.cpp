@@ -9,6 +9,7 @@
 #include "./color/color_colorspace.h"
 #include "./dialog/confirmdialog.h"
 #include "./dialog/valuedialog.h"
+#include "./dialog/kerneldialog.h"
 using namespace cv;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -141,4 +142,37 @@ void MainWindow::on_buttonMean_clicked()
         ui->image->showImage(img);
         ui->history->addImg(img, QString("Mean"));
     }
+}
+
+void MainWindow::on_buttonCustom_clicked()
+{
+    Mat kernel;
+
+    if (!KernelDialog().show(kernel))
+        return;
+
+    Mat img;
+    ui->image->getImage(img);
+
+    if (img.channels() == 3)
+        kernel = GrayToRGB<float>().doMap(kernel);
+
+    img = conv(img, kernel, MIRROR);
+    img.convertTo(img, CV_8UC(img.channels()));
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString("Custom Conv"));
+}
+
+void MainWindow::on_buttonMedium_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+
+    double size;
+    if (!ValueDialog().show("size", size, true))
+        return;
+
+    img = MediumFilter(size).doFilter(img);
+    ui->image->showImage(img);
+    ui->history->addImg(img, "Medium");
 }

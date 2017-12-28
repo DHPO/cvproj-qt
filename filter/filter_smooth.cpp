@@ -99,7 +99,7 @@ Mat MediumFilter::medium_3(const Mat &img)
     int rRows = rows - size + 1;
     int rCols = cols - size + 1;
 
-    Mat result(rRows, rCols * 3, img.type());
+    Mat result(rRows, rCols, img.type());
     for (int r = 0; r < rRows; r++) {
         for (int c = 0; c < rCols; c ++) {
             vector<float> tempB, tempG, tempR;

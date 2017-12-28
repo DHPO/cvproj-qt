@@ -36,6 +36,10 @@ private slots:
 
     void on_buttonMean_clicked();
 
+    void on_buttonCustom_clicked();
+
+    void on_buttonMedium_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *newAct;

@@ -160,7 +160,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="File">
      <widget class="QPushButton" name="buttonOpen">
@@ -349,6 +349,19 @@
       </property>
       <property name="text">
        <string>Laplace</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonCustom">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>210</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Custom</string>
       </property>
      </widget>
     </widget>
