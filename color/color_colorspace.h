@@ -14,7 +14,7 @@ class GrayToRGB : public MatMapper<T, 1, T, 3>
     }
 };
 
-enum ConvertMethod {AVG, RED, GREED, BLUE};
+enum ConvertMethod {AVG, RED, GREEN, BLUE};
 
 template <typename T>
 class RGBToGray : public MatMapper<T, 3, T, 1>
@@ -32,7 +32,7 @@ class RGBToGray : public MatMapper<T, 3, T, 1>
             return Vec<T, 1>((data[0] + data[1] + data[2]) / 3);
         case RED:
             return Vec<T, 1>(data[2]);
-        case GREED:
+        case GREEN:
             return Vec<T, 1>(data[1]);
         case BLUE:
             return Vec<T, 1>(data[0]);

@@ -14,6 +14,8 @@ class ImageList : public QListWidget
     Q_OBJECT
 public:
     ImageList(QWidget *parent);
+    vector<string> getImgNames();
+    Mat getImgById(int idx);
 
 signals:
     void showImg(const Mat &img);
@@ -25,7 +27,8 @@ private slots:
     void getImg(QListWidgetItem *item);
 
 private:
-    vector<Mat *> imgs;
+    vector<Mat> imgs;
+    vector<string> names;
 };
 
 #endif // IMAGELIST_H

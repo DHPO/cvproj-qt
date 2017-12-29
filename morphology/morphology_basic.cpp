@@ -37,13 +37,13 @@ Mat dilate_b(const Mat &img, const Mat &kernel, Point anchor)
             int temp = 0;
             for (int rr = max(0, r - anchor.x); rr < min(img.rows, r + anchor.x); rr ++) {
                 for (int cc = max(0, c - anchor.y); cc < min(img.cols, c + anchor.y); cc ++) {
-                    if (kernel.at<short>(rr - r + anchor.x, cc - c + anchor.y) == 1 && img.at<uchar>(rr, cc) == 0) {
-                        result.at<uchar>(r, c) = 0;
+                    if (kernel.at<short>(rr - r + anchor.x, cc - c + anchor.y) == 1 && img.at<uchar>(rr, cc) == 255) {
+                        result.at<uchar>(r, c) = 255;
                         goto out;
                     }
                 }
             }
-            result.at<uchar>(r, c) = 255;
+            result.at<uchar>(r, c) = 0;
             out:;
         }
     }
@@ -98,13 +98,13 @@ Mat erode_b(const Mat &img, const Mat &kernel, Point anchor)
             int temp = 255;
             for (int rr = max(0, r - anchor.x); rr < min(img.rows, r + anchor.x); rr ++) {
                 for (int cc = max(0, c - anchor.y); cc < min(img.cols, c + anchor.y); cc ++) {
-                    if (kernel.at<short>(rr - r + anchor.x, cc - c + anchor.y) == 1 && img.at<uchar>(rr, cc) == 255) {
-                        result.at<uchar>(r, c) = 255;
+                    if (kernel.at<short>(rr - r + anchor.x, cc - c + anchor.y) == 1 && img.at<uchar>(rr, cc) == 0) {
+                        result.at<uchar>(r, c) = 0;
                         goto out;
                     }
                 }
             }
-            result.at<uchar>(r, c) = 0;
+            result.at<uchar>(r, c) = 255;
             out:;
         }
     }

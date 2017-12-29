@@ -56,6 +56,20 @@ private slots:
 
     void on_buttonBlackhat_clicked();
 
+    void on_buttonScale_clicked();
+
+    void on_buttonRotate_clicked();
+
+    void on_buttonShearX_clicked();
+
+    void on_buttonShearY_clicked();
+
+    void on_buttonAdd_clicked();
+
+    void on_buttonSubstract_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *newAct;

@@ -3,6 +3,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <vector>
+#include "./color/color_interpolate.h"
 using namespace cv;
 
 template <typename T>
@@ -54,7 +55,7 @@ class MatTransformmer
 {
         virtual Point2f pointMap(Point2i point) = 0;
         virtual Point2f pointMapReverse(Point2i point) = 0;
-        virtual Vec<T, channels> interpolate(const Mat &img, Point2f point) = 0;
+        virtual Vec<T, channels> interpolate(const Mat &img, Point2f point);
     public:
         Mat doTrans(const Mat &matrix);
 };
@@ -190,6 +191,12 @@ void MatReducer<T, channels>::doReduce(const Mat &matrix, Summary<T, channels> &
 }
 
 template <typename T, int channels>
+Vec<T, channels> MatTransformmer<T, channels>::interpolate(const Mat &img, Point2f point)
+{
+    return bilinear<channels>(img, point);
+}
+
+template <typename T, int channels>
 Mat MatTransformmer<T, channels>::doTrans(const Mat &matrix)
 {
     expect(matrix.channels() == channels, "MatTransformmer - channels violate");
@@ -216,7 +223,7 @@ Mat MatTransformmer<T, channels>::doTrans(const Mat &matrix)
     /* go through */
     for (int r = 0; r < rows; r++) {
         for (int c = 0; c < cols; c++) {
-            Point point = pointMapReverse(Point2i(c - xbias, r - ybias));
+            Point2f point = pointMapReverse(Point2i(c - xbias, r - ybias));
             result.at<Vec<T, channels>>(r, c) = interpolate(matrix, point);
         }
     }

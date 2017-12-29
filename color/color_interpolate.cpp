@@ -48,7 +48,15 @@ Vec<uchar, 3> nb_3(const Mat &img, Point2f point)
 uchar bilinear_1(const Mat &img, Point2f point)
 {
     expect(img.type() == CV_8UC1, "bilinear_1 - invalid type");
-    expect(point.x < img.cols && point.y < img.rows, "bilinear_1 - point overflow");
+
+    if (point.x < 0 || point.x >= img.cols || point.y < 0 || point.y >= img.rows) {
+        return 0;
+    }
+
+    static int count = 0;
+    if (count < 10)
+        std::cout << point.x << "," << point.y << std::endl;
+    count++;
 
     int x = int(point.x);
     int y = int(point.y);
@@ -76,10 +84,10 @@ Vec<uchar, 3> bilinear_3(const Mat &img, Point2f point)
     float fx = point.x - x;
     float fy = point.y - y;
 
-    Vec<int, 3> b0 = img.at<Vec<uchar, 3>>(y, x);
-    Vec<int, 3> b1 = img.at<Vec<uchar, 3>>(y, x + 1);
-    Vec<int, 3> b2 = img.at<Vec<uchar, 3>>(y + 1, x);
-    Vec<int, 3> b3 = img.at<Vec<uchar, 3>>(y + 1, x + 1);
+    Vec<float, 3> b0 = img.at<Vec<uchar, 3>>(y, x);
+    Vec<float, 3> b1 = img.at<Vec<uchar, 3>>(y, x + 1);
+    Vec<float, 3> b2 = img.at<Vec<uchar, 3>>(y + 1, x);
+    Vec<float, 3> b3 = img.at<Vec<uchar, 3>>(y + 1, x + 1);
 
     return (1 - fx) * (1 - fy) * b0 + fx * (1 - fy) * b1 + (1 - fx) * fy * b2 + fx * fy * b3;
 }
@@ -117,4 +125,16 @@ Mat resize(const Mat &img, Size size, InterpolationMethod method)
     }
 
     return result;
+}
+
+template <>
+Vec<uchar, 1> bilinear(const Mat &img, Point2f point)
+{
+    return Vec<uchar, 1> (bilinear_1(img, point));
+}
+
+template <>
+Vec<uchar, 3> bilinear(const Mat &img, Point2f point)
+{
+    return bilinear_3(img, point);
 }

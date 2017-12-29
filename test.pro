@@ -43,7 +43,8 @@ SOURCES += \
     dialog/confirmdialog.cpp \
     dialog/valuedialog.cpp \
     dialog/kerneldialog.cpp \
-    dialog/messagedialog.cpp
+    dialog/messagedialog.cpp \
+    dialog/choicedialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -64,7 +65,8 @@ HEADERS += \
     dialog/confirmdialog.h \
     dialog/valuedialog.h \
     dialog/kerneldialog.h \
-    dialog/messagedialog.h
+    dialog/messagedialog.h \
+    dialog/choicedialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -72,7 +74,8 @@ FORMS += \
     dialog/confirmdialog.ui \
     dialog/valuedialog.ui \
     dialog/kerneldialog.ui \
-    dialog/messagedialog.ui
+    dialog/messagedialog.ui \
+    dialog/choicedialog.ui
 
 DISTFILES += \
     1.png

@@ -11,6 +11,9 @@
 #include "./dialog/valuedialog.h"
 #include "./dialog/kerneldialog.h"
 #include "./morphology/morphology_basic.h"
+#include "./dialog/choicedialog.h"
+#include "./matrix/matrix_map.h"
+#include "./dialog/messagedialog.h"
 using namespace cv;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -36,8 +39,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    qDebug() << ConfirmDialog().show("test") << endl;
-    ui->image->pushSave(ui->lineEdit->text());
+    Mat img;
+    ui->image->getImage(img);
+    ui->register_2->addImg(img, ui->lineEdit->text());
 }
 
 void MainWindow::openFile()
@@ -99,7 +103,11 @@ void MainWindow::on_buttonToGrayscale_clicked()
     ui->image->getImage(img);
     if (img.channels() != 3)
         return;
-    img = RGBToGray<uchar>(AVG).doMap(img);
+    int choice;
+    vector<string> methods({"Red", "Green", "Blue", "Average"});
+    ConvertMethod m[] = {RED, GREEN, BLUE, AVG};
+    ChoiceDialog().show("method", methods, choice);
+    img = RGBToGray<uchar>(m[choice]).doMap(img);
     ui->image->showImage(img);
     ui->history->addImg(img, QString("To Grayscale"));
 }
@@ -337,4 +345,266 @@ void MainWindow::on_buttonBlackhat_clicked()
 
     ui->image->showImage(img);
     ui->history->addImg(img, "Blackhat");
+}
+
+ template<int cn>
+    class Scale: public MatTransformmer<uchar, cn>
+    {
+    private:
+        double scale;
+    public:
+        Scale(double scale):scale(scale){};
+        Point2f pointMap(Point2i point) override {return Point2f(point.x * scale, point.y * scale);}
+        Point2f pointMapReverse(Point2i point) override {return Point2f(point.x / scale, point.y / scale);}
+    };
+
+
+void MainWindow::on_buttonScale_clicked()
+{
+    double scale;
+    if (!ValueDialog().show("Scale", scale))
+        return;
+
+    Mat img;
+    ui->image->getImage(img);
+
+    if (img.channels() == 1)
+        img = Scale<1>(scale).doTrans(img);
+    else if (img.channels() == 3)
+        img = Scale<3>(scale).doTrans(img);
+    else
+        return;
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "Scale");
+}
+
+template<int cn>
+class Rotate: public MatTransformmer<uchar, cn>
+{
+private:
+    double degree;
+    double sind;
+    double cosd;
+public:
+    Rotate(double degree):degree(degree){
+        sind = sin(degree / 180 * 3.14159);
+        cosd = cos(degree / 180 * 3.14159);
+    };
+    Point2f pointMap(Point2i point) override {
+        return Point2f(cosd * point.x - sind * point.y, sind * point.x + cosd * point.y);
+    }
+    Point2f pointMapReverse(Point2i point) override {
+        return Point2f(cosd * point.x + sind * point.y, -sind * point.x + cosd * point.y);
+    }
+};
+
+void MainWindow::on_buttonRotate_clicked()
+{
+    double degree;
+    if (!ValueDialog().show("Degree", degree))
+        return;
+
+    Mat img;
+    ui->image->getImage(img);
+
+    if (img.channels() == 1)
+        img = Rotate<1>(degree).doTrans(img);
+    else if (img.channels() == 3)
+        img = Rotate<3>(degree).doTrans(img);
+    else
+        return;
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "Rotate");
+}
+
+template<int cn>
+class ShearX: public MatTransformmer<uchar, cn>
+{
+private:
+    double degree;
+    double tand;
+public:
+    ShearX(double degree):degree(degree){
+        tand = tan(degree / 180 * 3.14159);
+    }
+    Point2f pointMap(Point2i point){
+        return Point2f(point.x - point.y * tand, point.y);
+    }
+    Point2f pointMapReverse(Point2i point){
+        return Point2f(point.x + point.y * tand, point.y);
+    }
+};
+
+void MainWindow::on_buttonShearX_clicked()
+{
+    double degree;
+    if (!ValueDialog().show("Degree", degree))
+        return;
+
+    Mat img;
+    ui->image->getImage(img);
+
+    if (img.channels() == 1)
+        img = ShearX<1>(degree).doTrans(img);
+    else if (img.channels() == 3)
+        img = ShearX<3>(degree).doTrans(img);
+    else
+        return;
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "ShearX");
+}
+
+template<int cn>
+class ShearY: public MatTransformmer<uchar, cn>
+{
+private:
+    double degree;
+    double tand;
+public:
+    ShearY(double degree):degree(degree){
+        tand = tan(degree / 180 * 3.14159);
+    }
+    Point2f pointMap(Point2i point){
+        return Point2f(point.x, point.y + point.x * tand);
+    }
+    Point2f pointMapReverse(Point2i point){
+        return Point2f(point.x, point.y - point.x * tand);
+    }
+};
+
+void MainWindow::on_buttonShearY_clicked()
+{
+    double degree;
+    if (!ValueDialog().show("Degree", degree))
+        return;
+
+    Mat img;
+    ui->image->getImage(img);
+
+    if (img.channels() == 1)
+        img = ShearY<1>(degree).doTrans(img);
+    else if (img.channels() == 3)
+        img = ShearY<3>(degree).doTrans(img);
+    else
+        return;
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "ShearY");
+}
+
+template<typename T, int channels>
+class MatAdd: public MatOperator<T, channels>
+{
+    Vec<T, channels> op(Vec<T, channels> d1, Vec<T, channels> d2)
+    {
+        return d1 + d2;
+    }
+};
+
+void MainWindow::on_buttonAdd_clicked()
+{
+    vector<string> imgList = ui->register_2->getImgNames();
+    int idx;
+    if (!ChoiceDialog().show("choose another image", imgList, idx))
+        return;
+
+    Mat img1;
+    ui->image->getImage(img1);
+    Mat img2 = ui->register_2->getImgById(idx);
+
+    if (img1.rows != img2.rows || img1.cols != img2.cols) {
+        MessageDialog().show("Size not equal");
+        return;
+    }
+
+    Mat result;
+    qDebug() << img1.channels() << "," << img2.channels() << endl;
+    if (img1.channels() == 1 && img2.channels() == 1)
+        result = MatAdd<uchar, 1>().doOp(img1, img2);
+    else if (img1.channels() == 1) {
+        img1.convertTo(img1, CV_8UC3);
+        result = MatAdd<uchar, 3>().doOp(img1, img2);
+    }
+    else {
+        img2.convertTo(img2, CV_8UC3);
+        result = MatAdd<uchar, 3>().doOp(img1, img2);
+    }
+
+    ui->image->showImage(result);
+    ui->history->addImg(result, "Add");
+}
+
+template<typename T, int channels>
+class MatSub: public MatOperator<T, channels>
+{
+    Vec<T, channels> op(Vec<T, channels> d1, Vec<T, channels> d2)
+    {
+        return d1 - d2;
+    }
+};
+
+void MainWindow::on_buttonSubstract_clicked()
+{
+    vector<string> imgList = ui->register_2->getImgNames();
+    int idx;
+    if (!ChoiceDialog().show("choose another image", imgList, idx))
+        return;
+
+    Mat img1;
+    ui->image->getImage(img1);
+    Mat img2 = ui->register_2->getImgById(idx);
+
+    if (img1.rows != img2.rows || img1.cols != img2.cols) {
+        MessageDialog().show("Size not equal");
+        return;
+    }
+
+    Mat result;
+    qDebug() << img1.channels() << "," << img2.channels() << endl;
+    if (img1.channels() == 1 && img2.channels() == 1)
+        result = MatSub<uchar, 1>().doOp(img1, img2);
+    else if (img1.channels() == 1) {
+        img1.convertTo(img1, CV_8UC3);
+        result = MatSub<uchar, 3>().doOp(img1, img2);
+    }
+    else {
+        img2.convertTo(img2, CV_8UC3);
+        result = MatSub<uchar, 3>().doOp(img1, img2);
+    }
+
+    ui->image->showImage(result);
+    ui->history->addImg(result, "Substract");
+}
+
+template<typename T, int cn>
+class MatMul : public MatMapper<T, cn, T, cn>
+{
+private:
+    double coef;
+public:
+    MatMul(double coef):coef(coef){};
+    Vec<T, cn> map(Vec<T, cn> data) {
+        return data * coef;
+    }
+};
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    double coef;
+    if (!ValueDialog().show("coefficient", coef))
+        return;
+
+    Mat img;
+    ui->image->getImage(img);
+
+    if (img.channels() == 1)
+        img = MatMul<uchar, 1>(coef).doMap(img);
+    else
+        img = MatMul<uchar, 3>(coef).doMap(img);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "Multiply");
 }

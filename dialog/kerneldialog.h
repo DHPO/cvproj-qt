@@ -25,10 +25,13 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::KernelDialog *ui;
     Mat getKernel();
     void setKernel(const Mat &kernel);
+    void setDefault();
 };
 
 #endif // KERNELDIALOG_H
