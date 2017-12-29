@@ -17,7 +17,7 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void open();
+    void openFile();
     void saveas();
 
     void on_buttonOpen_clicked();
@@ -39,6 +39,22 @@ private slots:
     void on_buttonCustom_clicked();
 
     void on_buttonMedium_clicked();
+
+    void on_buttonToBinary_clicked();
+
+    void on_buttonDilate_clicked();
+
+    void on_buttonErode_clicked();
+
+    void on_buttonOpen_2_clicked();
+
+    void on_buttonClose_clicked();
+
+    void on_buttonGrad_clicked();
+
+    void on_buttonTophat_clicked();
+
+    void on_buttonBlackhat_clicked();
 
 private:
     Ui::MainWindow *ui;

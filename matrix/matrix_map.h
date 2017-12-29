@@ -18,9 +18,9 @@ Mat &matMap(Mat &matrix, T (*map)(T));
 template <typename T1, int cn1, typename T2, int cn2>
 class MatMapper
 {
-  public:
     /* To override */
     virtual Vec<T2, cn2> map(Vec<T1, cn1>) = 0;
+  public:
     /* To invoke */
     Mat doMap(const Mat &matrix);
 };
@@ -28,9 +28,9 @@ class MatMapper
 template <typename T, int channels = 1>
 class MatOperator
 {
-  public:
     /* To override */
     virtual Vec<T, channels> op(Vec<T, channels> d1, Vec<T, channels> d2) = 0;
+  public:
     /* To invoke */
     Mat doOp(const Mat &matrix1, const Mat &matrix2);
 };
@@ -47,6 +47,16 @@ class MatReducer
 public:
     //virtual void reduce(Summary& summary, Vec<T, channels> d) = 0;
     void doReduce(const Mat &matrix, Summary<T, channels> &summary);
+};
+
+template <typename T, int channels = 1>
+class MatTransformmer
+{
+        virtual Point2f pointMap(Point2i point) = 0;
+        virtual Point2f pointMapReverse(Point2i point) = 0;
+        virtual Vec<T, channels> interpolate(const Mat &img, Point2f point) = 0;
+    public:
+        Mat doTrans(const Mat &matrix);
 };
 
 /***************************************/
@@ -177,6 +187,41 @@ void MatReducer<T, channels>::doReduce(const Mat &matrix, Summary<T, channels> &
             summary.record(Vec<T, channels>(pa + j * channels));
         }
     }
+}
+
+template <typename T, int channels>
+Mat MatTransformmer<T, channels>::doTrans(const Mat &matrix)
+{
+    expect(matrix.channels() == channels, "MatTransformmer - channels violate");
+    expect(1 << ((matrix.type() % 8) >> 1) == sizeof(T), "MatTransformmer - type violate");
+
+    /* calculate result size */
+    Point2f point00 = pointMap(Point2i(0, 0));
+    Point2f pointx0 = pointMap(Point2i(matrix.cols, 0));
+    Point2f point0y = pointMap(Point2i(0, matrix.rows));
+    Point2f pointxy = pointMap(Point2i(matrix.cols, matrix.rows));
+
+    int xmin = min(min(point00.x, pointx0.x), min(point0y.x, pointxy.x));
+    int xmax = max(max(point00.x, pointx0.x), max(point0y.x, pointxy.x));
+    int ymin = min(min(point00.y, pointx0.y), min(point0y.y, pointxy.y));
+    int ymax = max(max(point00.y, pointx0.y), max(point0y.y, pointxy.y));
+
+    int cols = xmax - xmin;
+    int rows = ymax - ymin;
+    int xbias = -xmin;
+    int ybias = -ymin;
+
+    Mat result(rows, cols, matrix.type());
+
+    /* go through */
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            Point point = pointMapReverse(Point2i(c - xbias, r - ybias));
+            result.at<Vec<T, channels>>(r, c) = interpolate(matrix, point);
+        }
+    }
+
+    return result;
 }
 
 #endif

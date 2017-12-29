@@ -59,4 +59,13 @@ class HSVToRGBConverter: public MatMapper<float, 3, uchar, 3>
     Vec<uchar, 3> map(Vec<float, 3> hsv);
 };
 
+class GrayToBinary: public MatMapper<uchar, 1, uchar, 1>
+{
+    protected:
+        int threshold;
+    public:
+        GrayToBinary(int threshold): threshold(threshold){};
+        Vec<uchar, 1> map(Vec<uchar, 1> data);
+};
+
 #endif

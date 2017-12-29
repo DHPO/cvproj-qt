@@ -69,3 +69,8 @@ Vec<uchar, 3> HSVToRGBConverter::map(Vec<float, 3> hsv)
 {
     return HSVToRGB(hsv);
 }
+
+Vec<uchar, 1> GrayToBinary::map(Vec<uchar, 1> data)
+{
+    return Vec<uchar, 1>(data[0] >= threshold ? 255 : 0);
+}

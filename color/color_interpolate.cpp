@@ -66,7 +66,10 @@ uchar bilinear_1(const Mat &img, Point2f point)
 Vec<uchar, 3> bilinear_3(const Mat &img, Point2f point)
 {
     expect(img.type() == CV_8UC3, "bilinear_3 - invalid type");
-    expect(point.x < img.cols && point.y < img.rows, "bilinear_3 - point overflow");
+
+    if (point.x < 0 || point.x >= img.cols || point.y < 0 || point.y >= img.rows) {
+        return Vec<uchar, 3>(0, 0, 0);
+    }
 
     int x = int(point.x);
     int y = int(point.y);

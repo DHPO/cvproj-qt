@@ -10,6 +10,7 @@
 #include "./dialog/confirmdialog.h"
 #include "./dialog/valuedialog.h"
 #include "./dialog/kerneldialog.h"
+#include "./morphology/morphology_basic.h"
 using namespace cv;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -21,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QAction *actionopen = ui->actionopen;
     actionopen->setShortcuts(QKeySequence::Open);
     actionopen->setStatusTip(tr("Create a new file"));
-    connect(actionopen, &QAction::triggered, this, &MainWindow::open);
+    connect(actionopen, &QAction::triggered, this, &MainWindow::openFile);
     QAction *actionsaveas = ui->actionsave_as;
     actionsaveas->setShortcuts(QKeySequence::SaveAs);
     actionsaveas->setStatusTip(tr("Save as"));
@@ -39,7 +40,7 @@ void MainWindow::on_pushButton_clicked()
     ui->image->pushSave(ui->lineEdit->text());
 }
 
-void MainWindow::open()
+void MainWindow::openFile()
 {
     qDebug() << "open" << endl;
     QString filename = QFileDialog::getOpenFileName(this, tr("Open Image"), "/home/jimmy", tr("Image Files (*.png *.jpg *.bmp)"));
@@ -175,4 +176,165 @@ void MainWindow::on_buttonMedium_clicked()
     img = MediumFilter(size).doFilter(img);
     ui->image->showImage(img);
     ui->history->addImg(img, "Medium");
+}
+
+void MainWindow::on_buttonToBinary_clicked()
+{
+    double threshold;
+    if (!ValueDialog().show("Threshold", threshold, true))
+        return;
+
+    Mat img;
+    ui->image->getImage(img);
+
+    img = GrayToBinary(threshold).doMap(img);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "To Binary");
+}
+
+void MainWindow::on_buttonDilate_clicked()
+{
+    Mat kernel;
+    if (!KernelDialog().show(kernel))
+        return;
+    kernel.convertTo(kernel, CV_16SC1);
+
+    Mat img;
+    ui->image->getImage(img);
+
+    bool binary = ui->checkBox->isChecked();
+    if (binary)
+        img = dilate_b(img, kernel);
+    else
+        img = dilate(img, kernel);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "Dilate");
+}
+
+void MainWindow::on_buttonErode_clicked()
+{
+    Mat kernel;
+    if (!KernelDialog().show(kernel))
+        return;
+
+    kernel.convertTo(kernel, CV_16SC1);
+
+    Mat img;
+    ui->image->getImage(img);
+
+    bool binary = ui->checkBox->isChecked();
+    if (binary)
+        img = erode_b(img, kernel);
+    else
+        img = erode(img, kernel);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "Erode");
+}
+
+void MainWindow::on_buttonOpen_2_clicked()
+{
+    Mat kernel;
+    if (!KernelDialog().show(kernel))
+        return;
+
+    kernel.convertTo(kernel, CV_16SC1);
+
+    Mat img;
+    ui->image->getImage(img);
+
+    bool binary = ui->checkBox->isChecked();
+    if (binary)
+        img = open_b(img, kernel);
+    else
+        img = open_g(img, kernel);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "Open");
+}
+
+void MainWindow::on_buttonClose_clicked()
+{
+    Mat kernel;
+    if (!KernelDialog().show(kernel))
+        return;
+
+    kernel.convertTo(kernel, CV_16SC1);
+
+    Mat img;
+    ui->image->getImage(img);
+
+    bool binary = ui->checkBox->isChecked();
+    if (binary)
+        img = close_b(img, kernel);
+    else
+        img = close_g(img, kernel);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "Close");
+}
+
+void MainWindow::on_buttonGrad_clicked()
+{
+    Mat kernel;
+    if (!KernelDialog().show(kernel))
+        return;
+
+    kernel.convertTo(kernel, CV_16SC1);
+
+    Mat img;
+    ui->image->getImage(img);
+
+    bool binary = ui->checkBox->isChecked();
+    if (binary)
+        img = morphGrad_b(img, kernel);
+    else
+        img = morphGrad(img, kernel);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "Gradiant");
+}
+
+void MainWindow::on_buttonTophat_clicked()
+{
+    Mat kernel;
+    if (!KernelDialog().show(kernel))
+        return;
+
+    kernel.convertTo(kernel, CV_16SC1);
+
+    Mat img;
+    ui->image->getImage(img);
+
+    bool binary = ui->checkBox->isChecked();
+    if (binary)
+        img = tophat_b(img, kernel);
+    else
+        img = tophat(img, kernel);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "Tophat");
+}
+
+void MainWindow::on_buttonBlackhat_clicked()
+{
+    Mat kernel;
+    if (!KernelDialog().show(kernel))
+        return;
+
+    kernel.convertTo(kernel, CV_16SC1);
+
+    Mat img;
+    ui->image->getImage(img);
+
+    bool binary = ui->checkBox->isChecked();
+    if (binary)
+        img = blackhat_b(img, kernel);
+    else
+        img = blackhat(img, kernel);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, "Blackhat");
 }
