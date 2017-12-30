@@ -41,12 +41,23 @@ public:
 template<int cn>
 Vec<uchar, cn> Gamma_map(Vec<uchar, cn> data, double gamma);
 
-
-
 template<int cn>
 Vec<uchar, cn> Gamma<cn>::map(Vec<uchar, cn> data)
 {
     return Gamma_map<cn>(data, this->gamma);
 }
+
+class HSVAdjuster: public MatMapper<float, 3, float, 3>
+{
+private:
+    double hbias;
+    double sgamma;
+    double vgamma;
+public:
+    HSVAdjuster(double hbias, double sgamma, double vgamma):hbias(hbias), sgamma(sgamma), vgamma(vgamma) {};
+    Vec<float, 3> map(Vec<float, 3> data);
+};
+
+int otsu(vector<int> histogram);
 
 #endif

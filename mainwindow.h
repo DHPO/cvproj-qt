@@ -76,6 +76,8 @@ private slots:
 
     void on_buttonGamma_clicked();
 
+    void on_pushButton_3_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *newAct;

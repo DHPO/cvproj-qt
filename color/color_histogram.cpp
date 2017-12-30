@@ -91,3 +91,43 @@ Vec<uchar, 3> Gamma_map(Vec<uchar, 3> data, double gamma)
                 std::pow(data[2] / 255.0, gamma) * 255
                 );
 }
+
+Vec<float, 3> HSVAdjuster::map(Vec<float, 3> data)
+{
+    return Vec<float, 3> (
+                int(data[0] + hbias) % 360,
+                std::pow(data[1], sgamma),
+                std::pow(data[2] / 255.0, vgamma) * 255
+                );
+}
+
+int otsu(vector<int> histogram)
+{
+    int total = 0;
+    int frontCnt = 0;
+    int backCnt = 0;
+    int frontVal = 0;
+    int backVal = 0;
+
+    for (int i = 0; i < 256; i++) {
+        frontVal += i * histogram[i];
+        total += histogram[i];
+    }
+
+    int maxT = 0; int maxInter = 0;
+    for (int t = 1; t < 256; t++) {
+        frontVal -= t * histogram[t];
+        backVal += t * histogram[t];
+        frontCnt -= histogram[t];
+        backCnt += histogram[t];
+        if (frontCnt == 0 || backCnt == 0)
+            continue;
+        double inter = frontCnt * frontCnt * (frontVal / frontCnt - backVal / backCnt) * (frontVal / frontCnt - backVal / backCnt);
+        if (inter > maxInter) {
+            maxT = t;
+            maxInter = inter;
+        }
+    }
+
+    return maxT;
+}

@@ -43,6 +43,7 @@ bool HistogramDialog::show(const Mat &img, bool showSlideBar, int &value)
     if(!showSlideBar) {
         ui->label->hide();
         ui->horizontalSlider->hide();
+        ui->buttonOtsu->hide();
     }
     if(img.channels() == 1) {
         ui->mode->hide();
@@ -64,4 +65,10 @@ void HistogramDialog::on_mode_currentIndexChanged(int index)
     ConvertMethod methods[] = {RED, GREEN, BLUE, AVG};
     vector<int> datas = getHistogram(this->img, methods[index]);
     setGraph(datas);
+}
+
+void HistogramDialog::on_buttonOtsu_clicked()
+{
+    int t = otsu(datas);
+    ui->horizontalSlider->setValue(t);
 }

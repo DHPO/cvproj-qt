@@ -16,6 +16,7 @@
 #include "./dialog/messagedialog.h"
 #include "./dialog/histogramdialog.h"
 #include "./color/color_histogram.h"
+#include "./dialog/hsvdialog.h"
 using namespace cv;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -668,4 +669,21 @@ void MainWindow::on_buttonGamma_clicked()
 
     ui->image->showImage(img);
     ui->history->addImg(img, QString::fromStdString("Gamma"));
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+
+    double hbias, sgamma, vgamma;
+    if (!HSVDialog().show(hbias, sgamma, vgamma))
+        return;
+
+    img = RGBToHSVConverter().doMap(img);
+    img = HSVAdjuster(hbias, sgamma, vgamma).doMap(img);
+    img = HSVToRGBConverter().doMap(img);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString::fromStdString("HSV Adjust"));
 }

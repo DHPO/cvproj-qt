@@ -98,6 +98,19 @@
     </property>
    </item>
   </widget>
+  <widget class="QPushButton" name="buttonOtsu">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>470</y>
+     <width>109</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Otsu</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>

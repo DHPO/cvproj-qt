@@ -23,6 +23,8 @@ public:
 private slots:
     void on_mode_currentIndexChanged(int index);
 
+    void on_buttonOtsu_clicked();
+
 private:
     Ui::HistogramDialog *ui;
     void setGraph(vector<int> datas);
