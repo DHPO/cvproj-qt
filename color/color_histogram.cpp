@@ -1,6 +1,7 @@
 #include "./color_histogram.h"
 #include "../expect/expect.h"
 #include "./color_colorspace.h"
+#include <cmath>
 
 GrayHistogram::GrayHistogram()
 {
@@ -72,4 +73,21 @@ Adjuster::Adjuster(std::vector<uchar> adjustMap)
 Vec<uchar, 1> Adjuster::map(Vec<uchar, 1> data)
 {
     return Vec<uchar, 1>(adjustMap[data[0]]);
+}
+
+
+template<>
+Vec<uchar, 1> Gamma_map(Vec<uchar, 1> data, double gamma)
+{
+    return Vec<uchar, 1>(std::pow(data[0] / 255.0, gamma) * 255);
+}
+
+template<>
+Vec<uchar, 3> Gamma_map(Vec<uchar, 3> data, double gamma)
+{
+    return Vec<uchar, 3>(
+                std::pow(data[0] / 255.0, gamma) * 255,
+                std::pow(data[1] / 255.0, gamma) * 255,
+                std::pow(data[2] / 255.0, gamma) * 255
+                );
 }

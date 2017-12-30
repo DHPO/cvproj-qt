@@ -28,4 +28,25 @@ class Adjuster: public MatMapper<uchar, 1, uchar, 1>
         Vec<uchar, 1> map(Vec<uchar, 1> data);
 };
 
+template<int cn>
+class Gamma : public MatMapper<uchar, cn, uchar, cn>
+{
+private:
+    double gamma;
+public:
+    Gamma(double gamma):gamma(gamma) {};
+    Vec<uchar, cn> map(Vec<uchar, cn> data);
+};
+
+template<int cn>
+Vec<uchar, cn> Gamma_map(Vec<uchar, cn> data, double gamma);
+
+
+
+template<int cn>
+Vec<uchar, cn> Gamma<cn>::map(Vec<uchar, cn> data)
+{
+    return Gamma_map<cn>(data, this->gamma);
+}
+
 #endif

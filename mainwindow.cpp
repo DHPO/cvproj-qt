@@ -93,7 +93,7 @@ void MainWindow::on_buttonSobel_clicked()
     if (img.channels() == 3)
         img = RGBToGray<uchar>(AVG).doMap(img);
     img = SobelFilter().doFilter(img);
-    img.convertTo(img, CV_8UC1, 0.25, 0);
+//    img.convertTo(img, CV_8UC1, 0.25, 0);
     ui->image->showImage(img);
     ui->history->addImg(img, QString("Sobel"));
 }
@@ -122,7 +122,7 @@ void MainWindow::on_buttonLaplace_clicked()
     double sigma;
     if (ValueDialog().show("sigma", sigma)) {
         img = LaplacianFilter(sigma).doFilter(img);
-        img.convertTo(img, CV_8UC1, 1, 0);
+//        img.convertTo(img, CV_8UC1, 1, 0);
         ui->image->showImage(img);
         ui->history->addImg(img, QString("Laplace"));
     }
@@ -135,7 +135,7 @@ void MainWindow::on_buttonGauss_clicked()
     double sigma;
     if (ValueDialog().show("sigma", sigma)) {
         img = GaussianFilter(sigma).doFilter(img);
-        img.convertTo(img, CV_8UC(img.channels()));
+//        img.convertTo(img, CV_8UC(img.channels()));
         ui->image->showImage(img);
         ui->history->addImg(img, QString("Gauss"));
     }
@@ -148,7 +148,7 @@ void MainWindow::on_buttonMean_clicked()
     double size;
     if (ValueDialog().show("size", size, true)) {
         img = MeanFilter(size).doFilter(img);
-        img.convertTo(img, CV_8UC(img.channels()));
+//        img.convertTo(img, CV_8UC(img.channels()));
         ui->image->showImage(img);
         ui->history->addImg(img, QString("Mean"));
     }
@@ -165,10 +165,10 @@ void MainWindow::on_buttonCustom_clicked()
     ui->image->getImage(img);
 
     if (img.channels() == 3)
-        kernel = GrayToRGB<float>().doMap(kernel);
+        kernel = GrayToRGB<float>(AVG).doMap(kernel);
 
     img = conv(img, kernel, MIRROR);
-    img.convertTo(img, CV_8UC(img.channels()));
+//    img.convertTo(img, CV_8UC(img.channels()));
     ui->image->showImage(img);
     ui->history->addImg(img, QString("Custom Conv"));
 }
@@ -617,4 +617,55 @@ void MainWindow::on_buttonHistogram_clicked()
 
     int val;
     HistogramDialog().show(img, false, val);
+}
+
+void MainWindow::on_buttonEqualize_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+
+    if (img.channels() == 1) {
+        vector<int> histogram = getHistogram(img);
+        vector<uchar> colormap = equalize(histogram);
+
+        img = Adjuster(colormap).doMap(img);
+    }
+    else {
+        Mat red = RGBToGray<uchar>(RED).doMap(img);
+        Mat green = RGBToGray<uchar>(GREEN).doMap(img);
+        Mat blue = RGBToGray<uchar>(BLUE).doMap(img);
+        vector<int> h1 = getHistogram(img, RED);
+        vector<int> h2 = getHistogram(img, GREEN);
+        vector<int> h3 = getHistogram(img, BLUE);
+        vector<uchar> c1 = equalize(h1);
+        vector<uchar> c2 = equalize(h2);
+        vector<uchar> c3 = equalize(h3);
+        red = Adjuster(c1).doMap(red);
+        green = Adjuster(c2).doMap(green);
+        blue = Adjuster(c3).doMap(blue);
+        red = GrayToRGB<uchar>(RED).doMap(red);
+        green = GrayToRGB<uchar>(GREEN).doMap(green);
+        blue = GrayToRGB<uchar>(BLUE).doMap(blue);
+        img = MatAdd<uchar, 3>().doOp(MatAdd<uchar, 3>().doOp(red, green), blue);
+    }
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString::fromStdString("Equalize"));
+}
+
+void MainWindow::on_buttonGamma_clicked()
+{
+    double gamma;
+    if (!ValueDialog().show("gamma", gamma))
+        return;
+
+    Mat img;
+    ui->image->getImage(img);
+
+    if (img.channels() == 1)
+        img = Gamma<1>(gamma).doMap(img);
+    else
+        img = Gamma<3>(gamma).doMap(img);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString::fromStdString("Gamma"));
 }

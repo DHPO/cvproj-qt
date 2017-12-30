@@ -72,6 +72,10 @@ private slots:
 
     void on_buttonHistogram_clicked();
 
+    void on_buttonEqualize_clicked();
+
+    void on_buttonGamma_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *newAct;

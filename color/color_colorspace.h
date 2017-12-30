@@ -5,16 +5,26 @@
 #include "../matrix/matrix_map.h"
 using namespace std;
 
+enum ConvertMethod {AVG, RED, GREEN, BLUE};
+
 template <typename T>
 class GrayToRGB : public MatMapper<T, 1, T, 3>
 {
+private:
+    ConvertMethod method;
+public:
+    GrayToRGB(ConvertMethod method): method(method) {};
     Vec<T, 3> map(Vec<T, 1> data)
     {
+        switch(method) {
+            case AVG: return Vec<T, 3>(data[0], data[0], data[0]);
+        case RED: return Vec<T, 3>(0, 0, data[0]);
+        case GREEN: return Vec<T, 3>(0, data[0], 0);
+        case BLUE: return Vec<T, 3>(data[0], 0, 0);
+        }
         return Vec<T, 3>(data[0], data[0], data[0]);
     }
 };
-
-enum ConvertMethod {AVG, RED, GREEN, BLUE};
 
 template <typename T>
 class RGBToGray : public MatMapper<T, 3, T, 1>

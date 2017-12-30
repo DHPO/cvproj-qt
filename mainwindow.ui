@@ -349,6 +349,32 @@
        <string>Histogram</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="buttonEqualize">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>130</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Equalize</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonGamma">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>170</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Gamma</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="Filter">
      <widget class="QPushButton" name="buttonGauss">

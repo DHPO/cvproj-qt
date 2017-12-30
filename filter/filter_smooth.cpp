@@ -42,7 +42,7 @@ Mat GaussianFilter::doFilter(const Mat &matrix)
 {
     Mat kernel = this->kernel;
     if (matrix.channels() == 3)
-        kernel = GrayToRGB<float>().doMap(kernel);
+        kernel = GrayToRGB<float>(AVG).doMap(kernel);
 
     return conv(matrix, kernel, MIRROR);
 }
@@ -56,7 +56,7 @@ Mat MeanFilter::doFilter(const Mat &matrix)
 {
     Mat kernel = this->kernel;
     if (matrix.channels() == 3)
-        kernel = GrayToRGB<float>().doMap(kernel);
+        kernel = GrayToRGB<float>(AVG).doMap(kernel);
 
     return conv(matrix, kernel, MIRROR);
 }

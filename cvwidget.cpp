@@ -129,6 +129,9 @@ void CVWidget::showImage(Mat image)
 {
     image.copyTo(origin);
     drawMutex.lock();
+    if (image.depth() != 0)
+        image.convertTo(image, CV_8UC(image.channels()));
+
     if (image.channels() == 3)
         cvtColor(image, mOrigImage, CV_BGR2RGBA);
     else if (image.channels() == 1)
@@ -184,4 +187,5 @@ void CVWidget::pushSave(QString name)
 void CVWidget::getImage(Mat &image)
 {
     origin.copyTo(image);
+    image.convertTo(image, CV_8UC(image.channels()));
 }
