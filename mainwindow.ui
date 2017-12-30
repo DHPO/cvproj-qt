@@ -336,6 +336,19 @@
        <string>To Binary</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="buttonHistogram">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>90</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Histogram</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="Filter">
      <widget class="QPushButton" name="buttonGauss">
@@ -616,7 +629,7 @@
   <customwidget>
    <class>ImageList</class>
    <extends>QListWidget</extends>
-   <header>imagelist.h</header>
+   <header>imageList.h</header>
    <slots>
     <signal>showImg(Mat)</signal>
     <slot>addImg(Mat,QString)</slot>

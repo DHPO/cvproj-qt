@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -44,7 +44,8 @@ SOURCES += \
     dialog/valuedialog.cpp \
     dialog/kerneldialog.cpp \
     dialog/messagedialog.cpp \
-    dialog/choicedialog.cpp
+    dialog/choicedialog.cpp \
+    dialog/histogramdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -66,7 +67,8 @@ HEADERS += \
     dialog/valuedialog.h \
     dialog/kerneldialog.h \
     dialog/messagedialog.h \
-    dialog/choicedialog.h
+    dialog/choicedialog.h \
+    dialog/histogramdialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -75,7 +77,8 @@ FORMS += \
     dialog/valuedialog.ui \
     dialog/kerneldialog.ui \
     dialog/messagedialog.ui \
-    dialog/choicedialog.ui
+    dialog/choicedialog.ui \
+    dialog/histogramdialog.ui
 
 DISTFILES += \
     1.png

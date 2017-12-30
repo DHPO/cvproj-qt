@@ -70,6 +70,8 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_buttonHistogram_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *newAct;

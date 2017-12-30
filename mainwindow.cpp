@@ -14,6 +14,8 @@
 #include "./dialog/choicedialog.h"
 #include "./matrix/matrix_map.h"
 #include "./dialog/messagedialog.h"
+#include "./dialog/histogramdialog.h"
+#include "./color/color_histogram.h"
 using namespace cv;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -81,8 +83,7 @@ void MainWindow::on_buttonSaveAs_clicked()
 void MainWindow::on_buttonCanay_clicked()
 {
     int value;
-    bool accept = Dialog().getChoice(value);
-    qDebug() << accept << value << endl;
+    HistogramDialog().exec();
 }
 
 void MainWindow::on_buttonSobel_clicked()
@@ -188,12 +189,12 @@ void MainWindow::on_buttonMedium_clicked()
 
 void MainWindow::on_buttonToBinary_clicked()
 {
-    double threshold;
-    if (!ValueDialog().show("Threshold", threshold, true))
-        return;
-
     Mat img;
     ui->image->getImage(img);
+
+    int threshold;
+    if (!HistogramDialog().show(img, true, threshold))
+        return;
 
     img = GrayToBinary(threshold).doMap(img);
 
@@ -607,4 +608,13 @@ void MainWindow::on_pushButton_2_clicked()
 
     ui->image->showImage(img);
     ui->history->addImg(img, "Multiply");
+}
+
+void MainWindow::on_buttonHistogram_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+
+    int val;
+    HistogramDialog().show(img, false, val);
 }
