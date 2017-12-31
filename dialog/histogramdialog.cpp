@@ -37,7 +37,7 @@ void HistogramDialog::setGraph(vector<int> datas)
     ui->graphicsView->setChart(chart);
 }
 
-bool HistogramDialog::show(const Mat &img, bool showSlideBar, int &value)
+bool HistogramDialog::show(const Mat &img, bool showSlideBar, bool ignoreZero, int &value)
 {
     this->img = img;
     if(!showSlideBar) {
@@ -48,6 +48,8 @@ bool HistogramDialog::show(const Mat &img, bool showSlideBar, int &value)
     if(img.channels() == 1) {
         ui->mode->hide();
         vector<int> datas = getHistogram(img);
+        if (ignoreZero)
+            datas[0] = 0;
         setGraph(datas);
     }
     else {

@@ -83,8 +83,35 @@ void MainWindow::on_buttonSaveAs_clicked()
 
 void MainWindow::on_buttonCanay_clicked()
 {
-    int value;
-    HistogramDialog().exec();
+    double sigma;
+    if (!ValueDialog().show("sigma", sigma))
+        return;
+
+    Mat img;
+    ui->image->getImage(img);
+    if (img.channels() == 3)
+        img = RGBToGray<uchar>(AVG).doMap(img);
+
+    CannyFilter canny(img);
+    img = canny.step1(sigma);
+    ui->image->showImage(img);
+
+    int tlow, thigh;
+    if (!HistogramDialog().show(img, true, true, tlow))
+        return;
+    if (!HistogramDialog().show(img, true, true, thigh))
+        return;
+    if (tlow > thigh) {
+        tlow = tlow ^ thigh;
+        thigh = tlow ^ thigh;
+        tlow = tlow ^ thigh;
+    }
+
+    canny.setThreshold(thigh, tlow);
+    img = canny.step2();
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString::fromStdString("Canny"));
 }
 
 void MainWindow::on_buttonSobel_clicked()
@@ -194,7 +221,7 @@ void MainWindow::on_buttonToBinary_clicked()
     ui->image->getImage(img);
 
     int threshold;
-    if (!HistogramDialog().show(img, true, threshold))
+    if (!HistogramDialog().show(img, true, false, threshold))
         return;
 
     img = GrayToBinary(threshold).doMap(img);
@@ -617,7 +644,7 @@ void MainWindow::on_buttonHistogram_clicked()
     ui->image->getImage(img);
 
     int val;
-    HistogramDialog().show(img, false, val);
+    HistogramDialog().show(img, false, false, val);
 }
 
 void MainWindow::on_buttonEqualize_clicked()

@@ -18,7 +18,7 @@ class HistogramDialog : public QDialog
 public:
     explicit HistogramDialog(QWidget *parent = 0);
     ~HistogramDialog();
-    bool show(const Mat &img, bool showSlideBar, int &value);
+    bool show(const Mat &img, bool showSlideBar, bool ignoreZero, int &value);
 
 private slots:
     void on_mode_currentIndexChanged(int index);
