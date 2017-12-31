@@ -93,7 +93,9 @@ void KernelDialog::on_pushButton_clicked()
 
 bool KernelDialog::show(Mat &kernel) {
     exec();
-    getKernel().copyTo(kernel);
+    if (this->result()) {
+        getKernel().copyTo(kernel);
+    }
     return this->result();
 }
 

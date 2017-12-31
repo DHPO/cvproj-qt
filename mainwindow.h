@@ -78,6 +78,18 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void on_buttonThin_clicked();
+
+    void on_buttonThick_clicked();
+
+    void on_buttonDistance_clicked();
+
+    void on_buttonBone_clicked();
+
+    void on_buttonReconstruct_clicked();
+
+    void on_buttonWatershed_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *newAct;

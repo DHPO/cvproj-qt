@@ -101,13 +101,13 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>390</y>
+      <y>440</y>
       <width>151</width>
-      <height>251</height>
+      <height>201</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -156,7 +156,7 @@
       <x>20</x>
       <y>80</y>
       <width>141</width>
-      <height>301</height>
+      <height>361</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -565,13 +565,91 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>270</y>
+        <y>330</y>
         <width>131</width>
         <height>33</height>
        </rect>
       </property>
       <property name="text">
        <string>Binary</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonThin">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>170</y>
+        <width>71</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Thin</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonThick">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>170</y>
+        <width>71</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Thick</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonDistance">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>210</y>
+        <width>71</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Distance</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonBone">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>210</y>
+        <width>71</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bone</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonReconstruct">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>250</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Reconstruct</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonWatershed">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>290</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Watershed</string>
       </property>
      </widget>
     </widget>

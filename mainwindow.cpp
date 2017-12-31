@@ -714,3 +714,70 @@ void MainWindow::on_pushButton_3_clicked()
     ui->image->showImage(img);
     ui->history->addImg(img, QString::fromStdString("HSV Adjust"));
 }
+
+void MainWindow::on_buttonThin_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+    img = thin(img);
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString::fromStdString("Thin"));
+}
+
+void MainWindow::on_buttonThick_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+    img = thick(img);
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString::fromStdString("Thick"));
+}
+
+void MainWindow::on_buttonDistance_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+
+    img = distanceConvert(img);
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString::fromStdString("Distance"));
+}
+
+void MainWindow::on_buttonBone_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+    img = bone(img);
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString::fromStdString("Bone"));
+}
+
+void MainWindow::on_buttonReconstruct_clicked()
+{
+    vector<string> imgList = ui->register_2->getImgNames();
+    int idx;
+    if (!ChoiceDialog().show("choose mark", imgList, idx))
+        return;
+
+    Mat img1;
+    ui->image->getImage(img1);
+    Mat img2 = ui->register_2->getImgById(idx);
+
+    img1 = reconstruct(img1, img2);
+    ui->image->showImage(img1);
+    ui->history->addImg(img1, QString::fromStdString("Reconstruct"));
+}
+
+void MainWindow::on_buttonWatershed_clicked()
+{
+    double threshold;
+    if (!ValueDialog().show("threshold", threshold, true))
+        return;
+
+    Mat img;
+    ui->image->getImage(img);
+
+    img = watershed(img, threshold);
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString::fromStdString("Watershed"));
+}
