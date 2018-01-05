@@ -90,6 +90,12 @@ private slots:
 
     void on_buttonWatershed_clicked();
 
+    void on_buttonCut_clicked();
+
+    void on_buttonToRGB_clicked();
+
+    void on_buttonLinear_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAction *newAct;

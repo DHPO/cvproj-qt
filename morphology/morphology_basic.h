@@ -37,6 +37,7 @@ Mat distanceConvert(const Mat &img);
 Mat bone(const Mat &img);
 
 Mat reconstruct(const Mat &img, const Mat &mark);
+Mat reconstruct_g(const Mat &img, const Mat &mark);
 Mat watershed(const Mat &img, int threshold = 1);
 
 #endif

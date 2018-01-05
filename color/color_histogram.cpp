@@ -3,6 +3,11 @@
 #include "./color_colorspace.h"
 #include <cmath>
 
+int min(float d1, int d2)
+{
+    return d1 > d2 ? d2 : d1;
+}
+
 GrayHistogram::GrayHistogram()
 {
     histo.resize(256);
@@ -130,4 +135,31 @@ int otsu(vector<int> histogram)
     }
 
     return maxT;
+}
+
+template<>
+Vec<uchar, 3> linearMap(Vec<uchar, 3> data, const vector<Point2i> &controls)
+{
+    float d = (data[0] + data[1] + data[2]) / 3.0;
+    for (int i = 0; i < controls.size(); i++) {
+        if (d < controls[i].x) {
+            float result = (d - controls[i-1].x) * (controls[i].y - controls[i-1].y) / (controls[i].x - controls[i-1].x)  + controls[i-1].y;
+            result = result / d;
+            return Vec<uchar, 3>(min(data[0] * result, 255), min(data[1] * result, 255), min(data[2] * result, 255));
+        }
+    }
+    return Vec<uchar, 3>(255, 255, 255);
+}
+
+template<>
+Vec<uchar, 1> linearMap(Vec<uchar, 1> data, const vector<Point2i> &controls)
+{
+    float d = data[0];
+    for (int i = 0; i < controls.size(); i++) {
+        if (d < controls[i].x) {
+            int result = (d - controls[i-1].x) * (controls[i].y - controls[i-1].y) / (controls[i].x - controls[i-1].x) + controls[i-1].y;
+            return Vec<uchar, 1>(result > 255 ? 255 : result);
+        }
+    }
+    return Vec<uchar, 1>(255);
 }

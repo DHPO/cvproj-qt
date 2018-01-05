@@ -46,7 +46,8 @@ SOURCES += \
     dialog/messagedialog.cpp \
     dialog/choicedialog.cpp \
     dialog/histogramdialog.cpp \
-    dialog/hsvdialog.cpp
+    dialog/hsvdialog.cpp \
+    dialog/pointsdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -70,7 +71,8 @@ HEADERS += \
     dialog/messagedialog.h \
     dialog/choicedialog.h \
     dialog/histogramdialog.h \
-    dialog/hsvdialog.h
+    dialog/hsvdialog.h \
+    dialog/pointsdialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -81,7 +83,8 @@ FORMS += \
     dialog/messagedialog.ui \
     dialog/choicedialog.ui \
     dialog/histogramdialog.ui \
-    dialog/hsvdialog.ui
+    dialog/hsvdialog.ui \
+    dialog/pointsdialog.ui
 
 DISTFILES += \
     1.png

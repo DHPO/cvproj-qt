@@ -421,6 +421,22 @@ Mat reconstruct(const Mat &img, const Mat &mark)
     return temp;
 }
 
+Mat reconstruct_g(const Mat &img, const Mat &mark)
+{
+    short kernel_data[] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    Mat kernel(3, 3, CV_16SC1, kernel_data);
+
+    Mat temp = mark.clone();
+    Mat prev = temp.clone();
+    do{
+        prev = temp.clone();
+        temp = dilate(temp, kernel);
+        temp = MatIntersect().doOp(temp, img);
+    } while (!matEqual(prev, temp));
+
+    return temp;
+}
+
 vector<int> marksAround(const Mat &mark, Point2i point)
 {
     int r = point.x, c = point.y;
@@ -468,6 +484,7 @@ Mat watershed(const Mat &img, int threshold)
     int maxMark = 0;
 
     for (int w = 0; w <= 255/threshold; w += 1) {
+        std::cout << w << std::endl;
         for (auto point: pixels[w]) {
             vector<int> marks = marksAround(mark, point);
             if (marks.size() == 0) {
@@ -501,7 +518,7 @@ Mat watershed(const Mat &img, int threshold)
                 }*/
             }
             else if (marks.size() == 1) {
-                mark.at<int>(point.x, point.y) = marks[0];
+                mark.at<int>(point.x, point.y) = getRoot(marks[0], markUnion);
             }
             else {
                 int root0 = getRoot(marks[0], markUnion), root1 = getRoot(marks[1], markUnion);
@@ -515,13 +532,13 @@ Mat watershed(const Mat &img, int threshold)
                 else {
                   /* build shed */
                    mark.at<int>(point.x, point.y) = marks[0];
-                   //shed.at<uchar>(point.x, point.y) = 255;
+                   shed.at<uchar>(point.x, point.y) = 255;
                 }
            }
         }
     }
 
-    for (int r = 0; r < mark.rows; r++) {
+    /*for (int r = 0; r < mark.rows; r++) {
         for (int c = 0; c < mark.cols; c++) {
             vector<int> marks= marksAround(mark, Point2i(r, c));
             if (marks.size() <= 1)
@@ -533,7 +550,7 @@ Mat watershed(const Mat &img, int threshold)
             if (roots.size() >= 2)
                 shed.at<uchar>(r, c) = 255;
         }
-    }
+    }*/
 
     return shed;
 }

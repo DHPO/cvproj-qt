@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1249</width>
-    <height>779</height>
+    <width>1399</width>
+    <height>839</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>1000</x>
-      <y>660</y>
+      <x>1150</x>
+      <y>760</y>
       <width>109</width>
       <height>36</height>
      </rect>
@@ -35,8 +35,8 @@
      <rect>
       <x>190</x>
       <y>40</y>
-      <width>1001</width>
-      <height>581</height>
+      <width>1141</width>
+      <height>681</height>
      </rect>
     </property>
    </widget>
@@ -44,8 +44,8 @@
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>620</y>
-      <width>1001</width>
+      <y>720</y>
+      <width>1141</width>
       <height>16</height>
      </rect>
     </property>
@@ -62,10 +62,10 @@
    <widget class="QScrollBar" name="verticalScrollBar">
     <property name="geometry">
      <rect>
-      <x>1190</x>
+      <x>1330</x>
       <y>40</y>
       <width>16</width>
-      <height>581</height>
+      <height>681</height>
      </rect>
     </property>
     <property name="maximum">
@@ -78,8 +78,8 @@
    <widget class="QDoubleSpinBox" name="doubleSpinBox">
     <property name="geometry">
      <rect>
-      <x>1130</x>
-      <y>660</y>
+      <x>1280</x>
+      <y>760</y>
       <width>77</width>
       <height>36</height>
      </rect>
@@ -103,7 +103,7 @@
       <x>20</x>
       <y>440</y>
       <width>151</width>
-      <height>201</height>
+      <height>301</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -119,7 +119,7 @@
         <x>0</x>
         <y>0</y>
         <width>151</width>
-        <height>211</height>
+        <height>261</height>
        </rect>
       </property>
      </widget>
@@ -134,7 +134,7 @@
         <x>0</x>
         <y>0</y>
         <width>151</width>
-        <height>211</height>
+        <height>261</height>
        </rect>
       </property>
      </widget>
@@ -143,8 +143,8 @@
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>860</x>
-      <y>660</y>
+      <x>1010</x>
+      <y>760</y>
       <width>113</width>
       <height>35</height>
      </rect>
@@ -340,7 +340,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>90</y>
+        <y>130</y>
         <width>141</width>
         <height>41</height>
        </rect>
@@ -353,7 +353,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>130</y>
+        <y>170</y>
         <width>141</width>
         <height>41</height>
        </rect>
@@ -366,7 +366,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>170</y>
+        <y>250</y>
         <width>141</width>
         <height>41</height>
        </rect>
@@ -379,13 +379,39 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>210</y>
+        <y>290</y>
         <width>141</width>
         <height>41</height>
        </rect>
       </property>
       <property name="text">
        <string>HSV</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonToRGB">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>90</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>To RGB</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonLinear">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>210</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Linear</string>
       </property>
      </widget>
     </widget>

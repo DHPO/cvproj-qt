@@ -60,4 +60,25 @@ public:
 
 int otsu(vector<int> histogram);
 
+template<int cn>
+class LinearAdjuster: public MatMapper<uchar, cn, uchar, cn>
+{
+private:
+    vector<Point2i> controls;
+    Vec<uchar, cn> map(Vec<uchar, cn> data);
+public:
+    LinearAdjuster(vector<Point2i> data):controls(data){
+        controls.insert(controls.begin(), Point2i(0, 0));
+        controls.insert(controls.end(), Point2i(255, 255));
+    };
+};
+
+template<int cn>
+Vec<uchar, cn> linearMap(Vec<uchar, cn> data, const vector<Point2i> &controls);
+
+template<int cn>
+Vec<uchar, cn> LinearAdjuster<cn>::map(Vec<uchar, cn> data)
+{
+    return linearMap(data, this->controls);
+}
 #endif

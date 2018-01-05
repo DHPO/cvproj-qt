@@ -1,6 +1,6 @@
 #include "./color_colorspace.h"
 
-Vec<uchar, 3> map(Vec<uchar, 1> data)
+Vec<uchar, 3> GrayToHeat::map(Vec<uchar, 1> data)
 {
     if (data[0] < 128)
         return Vec<uchar, 3>(255 - 2 * data[0], 2 * data[0], 0);
@@ -14,22 +14,22 @@ Vec<float, 3> RGBToHSV(Vec<uchar, 3> rgb)
 
     if (r == g && r == b)
         return Vec<float, 3>(0, 0, r);
-    if (r > g && g >= b)
+    if (r >= g && g >= b)
         /* max: r, min: b */
         return Vec<float, 3>(60.0 * (g - b) / (r - b), (1 - b / r), r);
-    if (r > b && b > g)
+    if (r >= b && b > g)
         /* max: r, min: g */
         return Vec<float, 3>(60.0 * (g - b) / (r - g) + 360, (1 - g / r), r);
-    if (g > r && r >= b)
+    if (g >= r && r >= b)
         /* max: g, min: b */
         return Vec<float, 3>(60.0 * (b - r) / (g - b) + 120, (1 - b / g), g);
-    if (g > b && b > r)
+    if (g >= b && b > r)
         /* max: g, min: r */
         return Vec<float, 3>(60.0 * (b - r) / (g - r) + 120, (1 - r / g), g);
-    if (b > r && r >= g)
+    if (b >= r && r >= g)
         /* max: b, min: g */
         return Vec<float, 3>(60.0 * (r - g) / (b - g) + 240, (1 - g / b), b);
-    if (b > g && g > r)
+    if (b >= g && g > r)
         /* max: b, min: r */
         return Vec<float, 3>(60.0 * (r - g) / (b - r) + 240, (1 - r / b), b);
 }

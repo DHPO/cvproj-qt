@@ -155,11 +155,11 @@ void CVWidget::mouseMoveEvent(QMouseEvent *e) {
     std::stringstream stream;
     int x = e->pos().x() - mRenderPosX;
     int y = e->pos().y() + mRenderPosY;
-    if (x < mRenderWidth && y < mRenderHeight && x >=0 && y >= 0) {
+    //if (x < mRenderWidth && y < mRenderHeight && x >=0 && y >= 0) {
         QRgb rgb = mResizedImg.pixel(x, y);
-        stream << "(" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb) << ")";
+        stream << "(" << x << "," << y << ") -> (" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb) << ")";
         emit showColor(QString::fromStdString(stream.str()));
-    }
+    //}
 }
 
 void CVWidget::setScale(double scale) {

@@ -17,6 +17,7 @@
 #include "./dialog/histogramdialog.h"
 #include "./color/color_histogram.h"
 #include "./dialog/hsvdialog.h"
+#include "./dialog/pointsdialog.h"
 using namespace cv;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -135,7 +136,8 @@ void MainWindow::on_buttonToGrayscale_clicked()
     int choice;
     vector<string> methods({"Red", "Green", "Blue", "Average"});
     ConvertMethod m[] = {RED, GREEN, BLUE, AVG};
-    ChoiceDialog().show("method", methods, choice);
+    if (!ChoiceDialog().show("method", methods, choice))
+        return;
     img = RGBToGray<uchar>(m[choice]).doMap(img);
     ui->image->showImage(img);
     ui->history->addImg(img, QString("To Grayscale"));
@@ -219,6 +221,8 @@ void MainWindow::on_buttonToBinary_clicked()
 {
     Mat img;
     ui->image->getImage(img);
+    if (img.channels() != 1)
+        return;
 
     int threshold;
     if (!HistogramDialog().show(img, true, false, threshold))
@@ -780,4 +784,98 @@ void MainWindow::on_buttonWatershed_clicked()
     img = watershed(img, threshold);
     ui->image->showImage(img);
     ui->history->addImg(img, QString::fromStdString("Watershed"));
+}
+
+template<int cn>
+class Cut : public MatTransformmer<uchar, cn>
+{
+private:
+    int rmin, rmax, cmin, cmax;
+    Point2f pointMap(Point2i point) {
+        int x = point.x > cmin ? (point.x < cmax ? point.x : cmax) : cmin;
+        int y = point.y > rmin ? (point.y < rmax ? point.y : rmax) : rmin;
+        return Point2f(x, y);
+    }
+    Point2f pointMapReverse(Point2i point) {
+        return Point2f(point.x, point.y);
+    }
+public:
+    Cut(Point2i p1, Point2i p2):cmin(p1.x),rmin(p1.y),cmax(p2.x),rmax(p2.y){};
+};
+
+void MainWindow::on_buttonCut_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+    vector<Point2i> points;
+
+    if (!PointsDialog().show(false, 2, points)) {
+        return;
+    }
+
+    if (img.channels() == 1) {
+        img = Cut<1>(points[0], points[1]).doTrans(img);
+    }
+    else {
+        img = Cut<3>(points[0], points[1]).doTrans(img);
+    }
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString::fromStdString("Cut"));
+}
+
+void MainWindow::on_buttonToRGB_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+    if (img.channels() != 1)
+        return;
+
+    vector<string> methods;
+    methods.push_back(string("red"));
+    methods.push_back(string("green"));
+    methods.push_back(string("blue"));
+    methods.push_back(string("write"));
+    methods.push_back(string("Heat"));
+
+    int choice;
+    if (ChoiceDialog().show("method", methods, choice)) {
+        switch(choice) {
+        case 0:
+            img = GrayToRGB<uchar>(RED).doMap(img);
+            break;
+        case 1:
+            img = GrayToRGB<uchar>(GREEN).doMap(img);
+            break;
+        case 2:
+            img = GrayToRGB<uchar>(BLUE).doMap(img);
+            break;
+        case 3:
+            img = GrayToRGB<uchar>(AVG).doMap(img);
+            break;
+        case 4:
+            img = GrayToHeat().doMap(img);
+            break;
+        }
+        ui->image->showImage(img);
+        ui->history->addImg(img, QString::fromStdString("To RGB"));
+    }
+}
+
+void MainWindow::on_buttonLinear_clicked()
+{
+    Mat img;
+    ui->image->getImage(img);
+
+    vector<Point2i> controls;
+    if (!PointsDialog().show(false, 255, controls))
+        return;
+
+    if (img.channels() == 1)
+        img = LinearAdjuster<1>(controls).doMap(img);
+    else
+        img = LinearAdjuster<3>(controls).doMap(img);
+
+    ui->image->showImage(img);
+    ui->history->addImg(img, QString::fromStdString("Linear Adjust"));
 }
